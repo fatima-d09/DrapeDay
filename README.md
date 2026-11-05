@@ -2,6 +2,10 @@
 
 A browser-based colour analysis tool. Take a photo, and Drape Day measures your skin, hair and eye colour, drapes colours under your face, and explains which ones suit you and why.
 
+## Visual of Web App
+
+Click here to see and use the <a href="#" target="_blank">colour analysis tool</a> 
+
 ## Features
 
 - **Light check:** checks brightness, shine, evenness and light colour before analysing the photo.
