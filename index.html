@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Drape Day</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="light" aria-hidden="true">
+  <div class="panes"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <span class="leaf" style="left:18%;top:22%;width:120px;height:60px;transform:rotate(30deg)"></span>
+  <span class="leaf" style="left:26%;top:30%;width:90px;height:40px;transform:rotate(-20deg)"></span>
+  <span class="leaf" style="left:12%;top:48%;width:140px;height:54px;transform:rotate(12deg)"></span>
+</div>
+
+<div class="pill" id="pill">DRAPES <b id="pillN">0</b></div>
+<button class="cta" id="cta" type="button" aria-haspopup="true">Take my photo</button>
+<div class="menu" id="menu" hidden>
+  <button type="button" id="optLive">Use my webcam</button>
+  <label for="takeInput">Take a photo (phone camera)<input id="takeInput" type="file" accept="image/*" capture="user"></label>
+  <label for="uploadInput">Upload a selfie<input id="uploadInput" type="file" accept="image/*"></label>
+  <small>daylight, facing a window, no filters</small>
+</div>
+<nav class="seg" aria-label="Views">
+  <button type="button" data-view="light" aria-pressed="true">Light check</button>
+  <button type="button" data-view="drape" aria-pressed="false">Drape</button>
+  <button type="button" data-view="colours" aria-pressed="false">My colours</button>
+  <button type="button" data-view="lab" aria-pressed="false">Hex lab</button>
+</nav>
+
+<main>
+  <!-- LIGHT CHECK -->
+  <section class="board b-light" id="v-light" aria-label="Light check">
+    <canvas class="deco hide-m" id="toastA" width="420" height="450" style="left:3%;bottom:70px;width:min(15vw,210px);transform:rotate(-12deg)"></canvas>
+    <canvas class="deco" id="budsA" width="640" height="440" style="right:2%;bottom:60px;width:min(30vw,420px);z-index:3"></canvas>
+    <div class="intro it">
+      <h1 class="title">What colours love you?</h1>
+      <p class="hand">a daylight drape test for your skin, with the reasons</p>
+      <p class="hand sm" id="lightNote" style="color:#3f5a50">Face a window. Lamps off, ring light off, filters off. Hair tucked back, plain top.</p>
+    </div>
+    <div class="mirror it">
+      <div class="pol">
+        <div class="stage" id="stage">
+          <canvas id="mirror" width="480" height="600"></canvas>
+          <video id="video" playsinline muted hidden></video>
+          <button class="undev" id="undev" type="button">Tap to take your photo</button>
+        </div>
+        <div class="cap" id="mirrorCap">fit your face in the frame, chin in shot</div>
+      </div>
+      <p class="hand sm" id="camBlocked" hidden style="margin:14px 0 0;color:var(--red)">This Claude preview doesn't allow webcam access. Open the downloadable copy of Drape Day in Chrome or Safari to use your webcam, or choose Upload a selfie (a Photo Booth shot or a phone photo works).</p>
+      <div style="display:flex;justify-content:center;margin-top:16px"><button class="cta" id="snapBtn" type="button" hidden style="position:static">Snap</button></div>
+    </div>
+    <div class="right it">
+      <div class="film" id="sampleFilm"><span class="code">DRAPE 400 ▸ 12A</span></div>
+      <div class="ticket" id="ticket"></div>
+      <div class="after">
+        <p class="hand sm" id="dotNote" hidden style="margin:0">Dots in the wrong place? Drag them onto bare skin, the coloured part of your eye, your natural hair and your chin.</p>
+        <label class="check" id="whiteWrap" hidden><input type="checkbox" id="whiteToggle"> there's white paper in the shot. Use it to correct the light (most accurate)</label>
+        <button class="hbtn" id="toDrape" type="button" hidden>drape me →</button>
+        <button class="hbtn" id="anyway" type="button" hidden>use this photo anyway →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- DRAPE -->
+  <section class="board b-drape" id="v-drape" aria-label="Drape test" hidden>
+    <canvas class="deco hide-m" id="swDeco" width="260" height="260" style="right:2%;top:56px;width:min(10vw,140px);transform:rotate(14deg)"></canvas>
+    <div class="it">
+      <div class="pair2">
+        <div class="pol"><canvas id="testCanvas" width="480" height="600"></canvas><div class="cap" id="testCap"></div></div>
+        <div class="pol"><canvas id="bestCanvas" width="480" height="600"></canvas><div class="cap" id="bestCap"></div></div>
+      </div>
+    </div>
+    <div class="side it">
+      <div class="lined torn" id="verdict" style="transform:rotate(1.2deg)"></div>
+      <div class="ctl">
+        <button class="hbtn" id="runBtn" type="button">run the 25 drapes again</button>
+        <label class="check" for="customColor"><input type="color" id="customColor" value="#7a2048"> try a colour you own</label>
+      </div>
+      <p class="hand sm" style="margin:0;color:#3f5a50">Each drape is shaded fabric under your chin, with the shadow it casts on your neck and the colour it bounces onto your jaw.</p>
+    </div>
+    <div class="sheet" id="sheet" aria-label="All 25 drapes. Tap one to see why."></div>
+  </section>
+
+  <!-- MY COLOURS -->
+  <section class="board b-col" id="v-colours" aria-label="My colours" hidden>
+    <canvas class="deco hide-m" id="toastB" width="420" height="450" style="right:1%;top:40px;width:min(12vw,170px);transform:rotate(16deg);z-index:0"></canvas>
+    <div class="empty" id="colEmpty">
+      <p class="title" style="font-size:44px">Your colours print here</p>
+      <p class="hand">Take a daylight selfie and run the drape test. Your season, best colours, combos and the full explanation appear on this page.</p>
+      <button class="cta" type="button" style="position:static" data-open-menu>Take my photo</button>
+    </div>
+    <div class="it tk" id="seasonTicket" hidden></div>
+    <div class="it bp" id="bestPolWrap" hidden><div class="pol"><canvas id="bestPol" width="480" height="600"></canvas><div class="cap" id="bestPolCap"></div></div></div>
+    <div class="it sn lined torn" id="seasonNote" hidden></div>
+    <div class="it top8" id="top8Wrap" hidden><h2 class="sub">wear near my face</h2><div class="swgrid" id="best"></div></div>
+    <div class="it good" id="goodWrap" hidden><h2 class="sub">combos that work</h2><div class="stack" id="goodCombos"></div></div>
+    <div class="it badc" id="badWrap" hidden><h2 class="sub">combos that don't</h2><div class="stack" id="badCombos"></div></div>
+    <div class="it avd" id="avoidWrap" hidden><h2 class="sub">keep away from my face</h2><div class="stack" id="avoid"></div></div>
+    <div class="it shades" id="shadeWrap" hidden><h2 class="sub">your best shade of every colour</h2><p class="hand sm" style="margin:-4px 0 18px;color:var(--soft)" id="shadeIntro"></p><div class="lined torn" id="shadeSummary" style="margin-bottom:26px"></div><div id="shades"></div></div>
+    <div class="it jr" id="journalWrap" hidden><h2 class="sub">the full read, with numbers</h2><div class="lined torn" id="journal"></div></div>
+    <div class="it ask" id="askWrap" hidden>
+      <h2 class="sub">ask Claude</h2>
+      <p class="hand sm" style="margin:0;color:#3f5a50">A longer, personal read of your result. Sends your numbers only, never the photo.</p>
+      <button class="hbtn" id="askBtn" type="button" style="justify-self:start">explain my result in depth →</button>
+      <div class="lined torn" id="askOut" hidden></div>
+    </div>
+  </section>
+  <!-- HEX LAB -->
+  <section class="board b-lab" id="v-lab" aria-label="Hex lab" hidden>
+    <div class="it lab-head">
+      <h2 class="title" style="font-size:clamp(40px,4.6vw,64px)">Hex lab</h2>
+      <p class="hand" style="max-width:56ch">Random hex colours, draped on you and scored. Then the pattern: what the winners share, what sinks the losers, and how to fix the worst ones.</p>
+      <div class="ctl" id="labCtl">
+        <button class="cta" id="rollBtn" type="button" style="position:static">Roll 16 random colours</button>
+        <form id="hexAdd" class="ctl" style="gap:8px"><label for="hexIn" class="hand sm" style="margin:0">or test a hex</label><input id="hexIn" class="hexin" placeholder="#7A2048" maxlength="7" autocomplete="off" spellcheck="false"><button class="cta" type="submit" style="position:static;background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1px #d9d2c6">Add</button><span id="hexMsg" class="hand sm" style="color:var(--red)"></span></form>
+      </div>
+    </div>
+    <div class="empty" id="labEmpty">
+      <p class="hand">Take your photo first. The lab drapes each random colour on you.</p>
+      <button class="cta" type="button" style="position:static" data-open-menu>Take my photo</button>
+    </div>
+    <div class="lined torn it" id="labSummary" hidden></div>
+    <div class="labgrid" id="labGrid" hidden></div>
+    <div class="it" id="labFixWrap" hidden><h2 class="sub">Fixing the three worst</h2><p class="hand sm" style="margin:-4px 0 16px;color:var(--soft)">Same colour family, nudged in lightness, saturation and warmth until it suits you.</p><div class="stack" id="labFix"></div></div>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
