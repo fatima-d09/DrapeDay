@@ -4,7 +4,7 @@ A browser-based colour analysis tool. Take a photo, and Drape Day measures your 
 
 ## Visual of Web App
 
-Click here to see and use the <a href="#" target="_blank">colour analysis tool</a> 
+Click here to see and use the <a href="https://fatima-d09.github.io/DrapeDay/" target="_blank">colour analysis tool</a> 
 
 ## Features
 
